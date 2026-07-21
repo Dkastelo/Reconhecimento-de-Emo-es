@@ -2,7 +2,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 import joblib
-from csv_generator import normalize_landmarks
+from features import extract_features
 
 # carrega o modelo treinado, nesse caso o svm
 model = joblib.load('SVM/emotion_svm.pkl')
@@ -16,7 +16,7 @@ cap = cv2.VideoCapture(0)
 
 with mp_face_mesh.FaceMesh(
     max_num_faces = 1,
-    refine_landmarks = True,
+    refine_landmarks = False,
     min_detection_confidence = 0.5,
     min_tracking_confidence = 0.5
 ) as face_mesh:
@@ -33,9 +33,10 @@ with mp_face_mesh.FaceMesh(
 
         if results.multi_face_landmarks:
             for face_landmarks in results.multi_face_landmarks:
-
-                norm_coords = normalize_landmarks(face_landmarks.landmark)
-                coords_array = norm_coords.reshape(1, -1)
+                
+                # extrai as distancias relativas
+                features = extract_features(face_landmarks.landmark)
+                coords_array = np.array(features).reshape(1, -1)
 
                 emotion = model.predict(coords_array)[0]
                 probability = np.max(model.predict_proba(coords_array)) * 100

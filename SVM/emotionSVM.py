@@ -26,8 +26,8 @@ pipe = Pipeline([
 # ========== GridSearch ==========
 #define a grade que queremos testar
 param_grid = {
-    'svm__C'     : [0.1, 1, 10],
-    'svm__gamma' : ['scale', 'auto']
+    'svm__C'     : [0.1, 1, 10, 100],
+    'svm__gamma' : ['scale', 'auto', 0.1, 0.01]
 }
 
 # configura o gridsearch
@@ -35,7 +35,7 @@ print('inicializando o GridSearch com o SVM')
 grid = GridSearchCV(
     estimator=pipe,
     param_grid=param_grid,
-    cv=3,
+    cv=5,
     scoring='accuracy',
     n_jobs=-1,
     verbose=2
