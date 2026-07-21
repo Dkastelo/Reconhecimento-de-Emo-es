@@ -12,9 +12,21 @@ df = pd.read_csv("landmarks.csv")
 X = df.drop(columns=['label'])
 y = df['label']
 
-# dividindo o treino e teste (80% e 20%)
+# dividindo o treino e teste (15% pra validação e 85% para treino/teste do GridSearch)
+X_train_full, X_val, y_train_full, y_val = train_test_split(
+    X,
+    y,
+    test_size = 0.15,
+    random_state = 42,
+    stratify = y
+)
+
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42, stratify=y
+    X_train_full,
+    y_train_full,
+    test_size = 0.2,
+    random_state = 42,
+    stratify = y_train_full
 )
 
 # define o pipeline
@@ -57,3 +69,8 @@ print(classification_report(y_test, y_pred))
 # salva o modelo treinado
 joblib.dump(best_model, 'emotion_svm.pkl')
 print("modelo salvo como 'emotion_svm.pkl'!")
+
+# salva os dados de validação
+val_df = pd.concat([X_val, y_val], axis=1)
+val_df.to_csv('landmarks_val.csv', index=False)
+print('dataset de validação salvo com sucesso')

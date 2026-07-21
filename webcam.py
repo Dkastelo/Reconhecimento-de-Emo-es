@@ -14,6 +14,9 @@ mp_drawing_styles = mp.solutions.drawing_styles
 
 cap = cv2.VideoCapture(0)
 
+cv2.namedWindow('reconhecimento de emoções', cv2.WINDOW_NORMAL)
+cv2.resizeWindow('reconhecimento de emoções', 1280, 720)
+
 with mp_face_mesh.FaceMesh(
     max_num_faces = 1,
     refine_landmarks = False,
@@ -54,7 +57,7 @@ with mp_face_mesh.FaceMesh(
                 text = f'{emotion.upper()} ({probability:.1f}%)'
                 cv2.putText(frame, text, (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         
-        cv2.imshow('Reconhecimento de Expressoes', frame)
+        cv2.imshow('reconhecimento de emoções', frame)
 
         if cv2.waitKey(5) & 0xFF == 27: # Pressione ESC para sair
             break
