@@ -4,8 +4,12 @@ import numpy as np
 import joblib
 from features import extract_features
 
-# carrega o modelo treinado, nesse caso o svm
-model = joblib.load('SVM/emotion_svm.pkl')
+# carrega o modelo treinado
+x = 2
+if x == 1:
+    model = joblib.load('SVM/emotion_svm.pkl')
+elif x == 2:
+    model = joblib.load('ANN/emotion_ann.pkl')
 
 # inicializa o mediapipe e a câmera
 mp_face_mesh = mp.solutions.face_mesh

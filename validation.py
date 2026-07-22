@@ -11,7 +11,11 @@ X = df.drop(columns=['label'])
 y = df['label']
 
 # ========== predição ==========
-model = joblib.load('SVM/emotion_svm.pkl')
+x = 2
+if x == 1:
+    model = joblib.load('SVM/emotion_svm.pkl')
+elif x == 2:
+    model = joblib.load('ANN/emotion_ann.pkl')
 
 y_pred = model.predict(X)
 
